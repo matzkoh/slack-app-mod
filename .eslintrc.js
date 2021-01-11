@@ -1,0 +1,93 @@
+/** @type {import('eslint').Linter.Config} */
+module.exports = {
+  root: true,
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
+  ],
+  plugins: ['simple-import-sort'],
+  parserOptions: {
+    project: 'tsconfig.json',
+  },
+  env: {
+    es6: true,
+    node: true,
+    browser: true,
+  },
+  rules: {
+    '@typescript-eslint/ban-types': ['error', { extendDefaults: true, types: { '{}': false } }],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-this-alias': 'off',
+    '@typescript-eslint/no-unused-vars': process.env.CI ? 'error' : 'warn',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+    curly: 'error',
+    eqeqeq: 'error',
+    'import/default': 'off',
+    'import/newline-after-import': 'error',
+    'import/no-cycle': 'error',
+    'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+    'import/order': 'off',
+    'no-constant-condition': ['error', { checkLoops: false }],
+    'no-empty': ['error', { allowEmptyCatch: true }],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: '*' },
+      { blankLine: 'any', prev: 'expression', next: 'expression' },
+      { blankLine: 'always', prev: 'multiline-expression', next: 'expression' },
+      { blankLine: 'any', prev: '*', next: 'expression' },
+      { blankLine: 'any', prev: 'singleline-const', next: 'const' },
+      { blankLine: 'any', prev: 'singleline-let', next: 'let' },
+      { blankLine: 'any', prev: 'singleline-var', next: 'var' },
+      { blankLine: 'any', prev: 'import', next: 'import' },
+      { blankLine: 'any', prev: 'export', next: 'export' },
+      { blankLine: 'any', prev: 'cjs-import', next: 'cjs-import' },
+      { blankLine: 'any', prev: 'cjs-export', next: 'cjs-export' },
+      { blankLine: 'any', prev: 'case', next: 'default' },
+    ],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+  },
+  overrides: [
+    {
+      files: ['*.ts'],
+      excludedFiles: ['*.test.ts'],
+      rules: {
+        'import/no-commonjs': 'error',
+      },
+    },
+    {
+      files: ['*.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        'import/order': ['error', { 'newlines-between': 'always' }],
+        'simple-import-sort/imports': 'off',
+        'simple-import-sort/exports': 'off',
+        'sort-imports': ['error', { ignoreDeclarationSort: true }],
+      },
+    },
+    {
+      files: ['*.{config,d,test}.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
+      files: ['src/content/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+      },
+    },
+  ],
+}

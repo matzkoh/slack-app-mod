@@ -1,0 +1,6 @@
+!*.js
+!*.ts
+asar/
+dist/
+node_modules/
+preload.bundle.js
