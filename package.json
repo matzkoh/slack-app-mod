@@ -1,6 +1,6 @@
 {
   "name": "@matzkoh/slack-app-mod",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "license": "MIT",
   "bin": {
     "slack-app-mod": "dist/bin/index.js"
