@@ -27,7 +27,8 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "asar": "3.0.3"
+    "asar": "3.0.3",
+    "rimraf": "3.0.2"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "2.0.0-nightly.526",
@@ -46,7 +47,6 @@
     "parcel": "2.0.0-nightly.524",
     "prettier": "2.2.1",
     "prettier-plugin-packagejson": "2.2.9",
-    "rimraf": "3.0.2",
     "ts-node": "9.1.1",
     "typescript": "4.1.3"
   },
