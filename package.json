@@ -18,8 +18,8 @@
     "build": "run-p build:*",
     "build:bin": "parcel build --no-cache --target cli src/bin/index.ts",
     "build:content": "parcel build --no-cache --target content src/content/index.ts",
-    "copy": "src/bin/copy.ts",
-    "extract": "src/bin/extract.ts",
+    "copy": "cross-env DEV=1 src/bin/copy.ts",
+    "extract": "cross-env DEV=1 src/bin/extract.ts",
     "fix": "run-p fix:*",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix:prettier": "npm run lint:prettier -- --write",
@@ -27,20 +27,23 @@
     "lint:eslint": "eslint --ext js,ts .",
     "lint:prettier": "prettier -l \"**/*.{json,md,yaml,yml}\"",
     "lint:type": "tsc --noEmit",
-    "pack": "src/bin/pack.ts",
+    "pack": "cross-env DEV=1 src/bin/pack.ts",
     "test": "npm run lint"
   },
   "dependencies": {
     "asar": "3.0.3",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "tmp": "0.2.1"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "2.0.0-nightly.526",
     "@types/dedent": "0.7.0",
     "@types/node": "14.14.20",
     "@types/rimraf": "3.0.0",
+    "@types/tmp": "0.2.0",
     "@typescript-eslint/eslint-plugin": "4.13.0",
     "@typescript-eslint/parser": "4.13.0",
+    "cross-env": "7.0.3",
     "dedent": "0.7.0",
     "eslint": "7.17.0",
     "eslint-config-prettier": "7.1.0",
