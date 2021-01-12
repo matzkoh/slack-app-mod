@@ -3,7 +3,16 @@ import { createReadStream } from 'fs'
 import { basename, join, relative } from 'path'
 import { Readable } from 'stream'
 
-import { asarExtractRoot, asarPackRoot, asarPath, listFiles, logger, rimraf, unpackedPath } from './common'
+import {
+  asarExtractRoot,
+  asarPackRoot,
+  asarPath,
+  contentScriptPath,
+  listFiles,
+  logger,
+  rimraf,
+  unpackedPath,
+} from './common'
 
 const log = logger('PACK')
 
@@ -47,5 +56,5 @@ async function* injectContentScript(source: Readable) {
   await Promise.resolve()
   yield* source
   yield* Readable.from('\n')
-  yield* createReadStream('dist/content/index.js')
+  yield* createReadStream(contentScriptPath)
 }

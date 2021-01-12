@@ -5,8 +5,9 @@ import { promisify } from 'util'
 
 export const rimraf = promisify(_rimraf)
 
-export const asarExtractRoot = 'asar/extract'
-export const asarPackRoot = 'asar/pack'
+export const contentScriptPath = resolve(__dirname, '../content/index.js')
+export const asarExtractRoot = resolve(__dirname, '../../asar/extract')
+export const asarPackRoot = resolve(__dirname, '../../asar/pack')
 
 export const asarPath = '/Applications/Slack.app/Contents/Resources/app.asar'
 export const backupAsarPath = asarPath + '.bak'
