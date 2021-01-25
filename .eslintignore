@@ -3,4 +3,3 @@
 asar/
 dist/
 node_modules/
-preload.bundle.js

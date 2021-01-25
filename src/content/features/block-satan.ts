@@ -1,37 +1,61 @@
-import { waitSelector } from '../util'
-import { run } from '.'
+import { addHook, addJsonHook } from '../xhr-hook'
 
-run(async () => {
-  await waitSelector('.c-message_list')
-    .then(el => el.querySelectorAll<HTMLElement>('.c-virtual_list__item'))
-    .then(processNodes)
+interface Message {
+  bot_id: string
+  blocks: unknown[]
+}
 
-  new MutationObserver(mutations => {
-    processNodes(mutations.flatMap(mutation => Array.from(mutation.addedNodes)))
-  }).observe(document, { childList: true, subtree: true })
+interface SubscriptionsThreadGetView {
+  threads: {
+    latest_replies: Message[]
+  }[]
+}
+
+interface HasMessages {
+  messages: Message[]
+}
+
+const SATAN_BOT_ID = 'BNV3HJB61'
+
+function isNotSatanMessage(message: Message) {
+  return message.bot_id !== SATAN_BOT_ID
+}
+
+addHook(({ url, response }) => {
+  if (
+    ![
+      '/api/subscriptions.thread.getView',
+      '/api/conversations.history',
+      '/api/conversations.replies',
+      '/api/conversations.views',
+      '/api/activity.mentions',
+      '/api/apps.profile.get',
+      '/cache/T04Q5G460/users/info',
+      '/cache/T04Q5G460/users/search',
+    ].includes(new URL(url).pathname) &&
+    typeof response === 'string' &&
+    response.includes(SATAN_BOT_ID)
+  ) {
+    alert(`// ${url}\n${response}\n`)
+  }
 })
 
-function processNodes(nodes: Node[] | NodeList) {
-  if (!inSatanChannel()) {
-    Array.from(nodes).filter(isSatanMessage).forEach(hideElement)
+addJsonHook<SubscriptionsThreadGetView>((url, json) => {
+  if (url.pathname === '/api/subscriptions.thread.getView') {
+    for (const thread of json.threads) {
+      thread.latest_replies = thread.latest_replies.filter(isNotSatanMessage)
+      thread.latest_replies.forEach(m => (m.blocks = []))
+    }
+
+    return true
   }
-}
+})
 
-function hideElement(el: HTMLElement) {
-  el.style.display = 'none'
-}
+addJsonHook<HasMessages>((url, json) => {
+  if (['/api/conversations.history', '/api/conversations.replies', '/api/conversations.views'].includes(url.pathname)) {
+    json.messages = json.messages.filter(isNotSatanMessage)
+    json.messages.forEach(m => (m.blocks = []))
 
-function isSatanMessage(el: Node): el is HTMLElement {
-  return (
-    el instanceof HTMLElement &&
-    !!el.querySelector(
-      '.c-message_list .c-virtual_list__item:scope .c-message_kit__gutter__left > a[href="/services/BNV3HJB61"]',
-    )
-  )
-}
-
-function inSatanChannel() {
-  return /^satan(?=[_-]|$)/i.test(
-    document.querySelector('.p-classic_nav__model__title__name__button')?.textContent ?? '',
-  )
-}
+    return true
+  }
+})

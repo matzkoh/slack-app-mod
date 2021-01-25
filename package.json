@@ -13,12 +13,15 @@
     "dist"
   ],
   "scripts": {
-    "all": "run-s build extract pack copy",
+    "all": "run-s build:content extract pack copy",
     "prebuild": "rimraf dist",
     "build": "run-p build:*",
     "build:bin": "parcel build --no-cache --target cli src/bin/index.ts",
     "build:content": "parcel build --no-cache --target content src/content/index.ts",
     "copy": "cross-env DEV=1 src/bin/copy.ts",
+    "dev": "run-p dev:*",
+    "dev:bin": "parcel watch --no-cache --target cli src/bin/index.ts",
+    "dev:content": "parcel watch --no-cache --target content src/content/index.ts",
     "extract": "cross-env DEV=1 src/bin/extract.ts",
     "fix": "run-p fix:*",
     "fix:eslint": "npm run lint:eslint -- --fix",

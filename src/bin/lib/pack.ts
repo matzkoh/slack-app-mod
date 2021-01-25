@@ -54,7 +54,7 @@ function transformer() {
 
 async function* injectContentScript(source: Readable) {
   await Promise.resolve()
-  yield* source
-  yield* Readable.from('\n')
   yield* createReadStream(contentScriptPath)
+  yield* Readable.from('\n')
+  yield* source
 }
